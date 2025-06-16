@@ -1,29 +1,28 @@
 name: Daily Animalia News
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # JSTの毎朝7:00（UTCの22:00）に実行
-  workflow_dispatch:  # 手動実行ボタンも表示されるようにする
+    - cron: '0 0 * * *'  # JST 9:00
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: リポジトリをチェックアウト
+      - name: Check out repo
         uses: actions/checkout@v3
 
-      - name: Python をセットアップ
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: 依存ライブラリをインストール
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install openai requests
 
-      - name: スクリプトを実行
+      - name: Run script
         run: python main.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
